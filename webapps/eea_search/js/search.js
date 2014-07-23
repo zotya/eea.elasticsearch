@@ -42,7 +42,8 @@ $(function($) {
           'Work Item' : []
         }],
           'http://www.eea.europa.eu/portal_types#topic' : [],
-          'http://purl.org/dc/terms/spatial' : []
+          'http://purl.org/dc/terms/spatial' : [],
+          'http://www.eea.europa.eu/ontologies.rdf#hasWorkflowState' : []
         };
 
   function getToday() {
@@ -152,6 +153,14 @@ $(function($) {
           'min_size': '10',
           'order': 'count',
           'operator': 'AND'
+        },
+        {
+          'field': 'http://www.eea.europa.eu/ontologies.rdf#hasWorkflowState',
+          'display': 'Workflow State',
+          'size': '100',
+          'min_size': '10',
+          'order': 'term',
+          'operator': 'AND'
         }
       ],
       search_sortby: [
@@ -170,9 +179,6 @@ $(function($) {
       add_undefined: true,
       predefined_filters: [
         {'term': {'language': language}},
-        {'term': {
-          'http://www.eea.europa.eu/ontologies.rdf#hasWorkflowState': 'public'}
-        },
         {'range': {'http://purl.org/dc/terms/issued': {'lte': today}}},
        // {'range': {'http://purl.org/dc/terms/expires': {'gte': today}}},
         {'constant_score': {
@@ -180,6 +186,20 @@ $(function($) {
             'or': [
               {'missing': {'field': 'http://purl.org/dc/terms/expires'}},
               {'range': {'http://purl.org/dc/terms/expires': {'gte': today}}}
+            ]
+          }}
+        },
+        {'constant_score': {
+          'filter': {
+            'or': [
+              {'term': {
+                'http://www.eea.europa.eu/ontologies.rdf#hasWorkflowState':
+                  'published'}
+              },
+              {'missing': {
+                'field':
+                  'http://www.eea.europa.eu/ontologies.rdf#hasWorkflowState'}
+              }
             ]
           }
         }}
