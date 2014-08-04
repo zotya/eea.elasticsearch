@@ -1,6 +1,8 @@
 /webapps/pam/external_templates
 /webapps/pam/node_modules/
 /etc/external_templates
+/etc/dev/eea_search/config.json
+/etc/production/eea_search/config.json
 *.egg-info
 *.pyc
 *.mo
