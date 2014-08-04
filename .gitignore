@@ -1,5 +1,6 @@
 /webapps/pam/external_templates
 /webapps/pam/node_modules/
+/etc/external_templates
 *.egg-info
 *.pyc
 *.mo

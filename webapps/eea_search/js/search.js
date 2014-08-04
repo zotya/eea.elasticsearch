@@ -188,21 +188,7 @@ $(function($) {
               {'range': {'http://purl.org/dc/terms/expires': {'gte': today}}}
             ]
           }}
-        },
-        {'constant_score': {
-          'filter': {
-            'or': [
-              {'term': {
-                'http://www.eea.europa.eu/ontologies.rdf#hasWorkflowState':
-                  'published'}
-              },
-              {'missing': {
-                'field':
-                  'http://www.eea.europa.eu/ontologies.rdf#hasWorkflowState'}
-              }
-            ]
-          }
-        }}
+        }
       ],
 
       hierarchy: appHierarchy,
