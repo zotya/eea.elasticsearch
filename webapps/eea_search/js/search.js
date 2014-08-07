@@ -62,6 +62,34 @@ $(function($) {
     return output;
   }
 
+  function hide_unused_options(blackList, whiteList) {
+    var filters = $('a.facetview_filterchoice');
+    for (var filter in filters) {
+      var thisFilter = filters[filter];
+      var value;
+      if (thisFilter.href) {
+        value = thisFilter.href.substring(
+          thisFilter.href.lastIndexOf('/') + 1,
+          thisFilter.href.length);
+      }
+      if (!whiteList.isEmptyObject) {
+        var toKeep = whiteList[thisFilter.rel];
+        if (toKeep && toKeep.indexOf(value) === -1) {
+          hidden = $(thisFilter.parentNode).remove();
+        }
+
+      } else {
+        var toHide = blackList[thisFilter.rel];
+        if (toHide === undefined) {
+          continue;
+        }
+        if (toHide.indexOf(value) >= 0) {
+          $(thisFilter.parentNode).remove();
+        }
+      }
+    }
+  }
+
   function display_results() {
     $('.eea-tile').remove();
     var data = $.fn.facetview.options.data;
@@ -177,7 +205,7 @@ $(function($) {
       ],
       result_display: [],
       add_undefined: true,
-      predefined_filters: [
+ /*     predefined_filters: [
         {'term': {'language': language}},
         {'range': {'http://purl.org/dc/terms/issued': {'lte': today}}},
        // {'range': {'http://purl.org/dc/terms/expires': {'gte': today}}},
@@ -189,14 +217,13 @@ $(function($) {
             ]
           }}
         }
-      ],
+      ],*/
 
       hierarchy: appHierarchy,
       permanent_filters: true,
       post_search_callback: function() {
         display_results();
-        window.hide_unused_options(blackList, whiteList);
-        window.add_iframe();
+        hide_unused_options(blackList, whiteList);
       },
       linkify: false,
              paging: {
